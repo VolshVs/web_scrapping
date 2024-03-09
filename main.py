@@ -73,11 +73,15 @@ def get_data():
         else:
             vacancy_salary = None
 
+
         vacancy_company_tag = vacancy_tag.find(
             'a',
             class_="bloko-link bloko-link_kind-tertiary"
         )
-        vacancy_company = vacancy_company_tag.text.strip()
+        if vacancy_company_tag:
+            vacancy_company = vacancy_company_tag.text.strip()
+        else:
+            vacancy_company = None
 
         vacancy_city_tag = vacancy_tag.find(
             'div',
@@ -111,8 +115,9 @@ def get_data():
 def write_json(vacancies_data):
     """Функция записи данных в json файл."""
     os.remove('data/vacancies.json')
-    with open('data/vacancies.json', 'w') as json_file:
-        json.dump(vacancies_data, json_file, indent=4)
+    with open('data/vacancies.json', 'w', encoding='UTF-8') as json_file:
+        json.dump(vacancies_data, json_file, indent=4, ensure_ascii=False)
+    return read_json()
 
 
 def read_json():
